@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Channels
+{% endblock %}
+
+{% block main %}
+<div class="container has-text-centered" id="channels">
+    <aside class="menu">
+        <p class="menu-label is-size-4">
+            Available channels
+        </p>
+        <ul class="menu-list is-size-5">
+            {% for channel in channels %}
+            <li><a class="channel" href="{{ url_for('channels_view', ch=channel) }}">{{ channel }}</a></li>
+            {% endfor %}
+        </ul>
+    </aside>
+</div>
+
+{% endblock %}

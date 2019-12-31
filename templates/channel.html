@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{ channel }}
+{% endblock %}
+
+{% block main %}
+<div class="container is-fluid is-marginless is-paddingless">
+    <div class="columns is-paddingless is-marginless">
+        <div class="column is-one-fifth has-background-white-ter is-paddingless">
+            <h2 class="title has-text-centered is-marginless has-background-grey-lighter">
+                {{ channel }}
+            </h2>
+            <div class="menu is-hidden-mobile has-background-white-ter" id="column">
+                <p class="menu-label">Connected users</p>
+                <ul class="menu-list" id="users_list">
+                    {% for user in users %}
+                    <li>
+                        {{ user }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

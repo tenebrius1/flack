@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Welcome to Flack!
+{% endblock %}
+
+{% block main %}
+
+<section class="hero is-info is-bold is-fullheight-with-navbar">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <h1 class="title">
+                Welcome to Flack!
+            </h1>
+            <h2 class="subtitle">
+                Type in a nickname and connect to a channel
+            </h2>
+
+            <div class="level-item has-text-centered">
+                <form action="/" method="POST" class="field has-addons" id="login_form">
+                    <p class="control has-icons-left">
+                        <input class="input" type="text" placeholder="Nickname" name="nickname" id="nickname"
+                            autocomplete="off" required>
+                        <span class="icon is-small is-left">
+                            <i class="far fa-user-circle"></i>
+                        </span>
+                    </p>
+                    <div class="control">
+                        <div class="select">
+                            <select name="channel" id="channel">
+                                <option disabled selected>Channels</option>
+                                {% for channel in channels %}
+                                <option>{{ channel }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <input type="submit" class="button is-success" id="send" name="send" value="Connect">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

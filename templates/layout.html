@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Bulma prerequisites -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <link rel="icon" href="https://img.icons8.com/wired/90/000000/telegram-app.png">
+
+  <!-- Link to styles.css -->
+  <link href="/static/styles.css" type="text/css" rel="stylesheet" />
+
+  <!-- Font for navbar brand -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:900i&display=swap" rel="stylesheet">
+
+  <!-- Link to jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <!-- Link to my own JS -->
+  <script src="/static/index.js" type="text/javascript"></script>
+
+  <!-- Link to socket.io.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" type="text/javascript"></script>
+
+  <title>Flack: {% block title %}{% endblock %}</title>
+</head>
+
+<body>
+  <nav class="navbar has-background-white-bis" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/">
+        <img src="https://img.icons8.com/wired/90/000000/telegram-app.png" alt="Flack">
+        <span id='flack'>Flack</span>
+      </a>
+
+      <div class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navi">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </div>
+    </div>
+
+    <div id="navi" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="/">
+          Home
+        </a>
+
+        <a class="navbar-item" href="{{ url_for('channels_view') }}">
+          Channel list
+        </a>
+
+        <a class="navbar-item" href="{{ url_for('create_channel') }}">
+          Create own channel
+        </a>
+
+        <a class="navbar-item" href="{{ url_for('logout') }}">
+          Logout
+        </a>
+
+      </div>
+    </div>
+  </nav>
+
+  {% with messages = get_flashed_messages(category_filter=["error"]) %}
+  {% if messages %}
+  <div class="notification is-danger">
+    <button class="delete"></button>
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+  </div>
+  {% endif %} {% endwith %}
+
+  {% with messages = get_flashed_messages(category_filter=["success"]) %}
+  {% if messages %}
+  <div class="notification is-success">
+    <button class="delete"></button>
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+  </div>
+  {% endif %} {% endwith %}
+
+  {% block main %} {% endblock %}
+  {% block script %}{% endblock %}
+
+</body>
+
+</html>

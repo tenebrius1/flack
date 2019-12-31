@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Create your own channel!
+{% endblock %}
+
+{% block main %}
+<div class="section has-text-centered">
+    <div class="columns is-centered">
+        <div class="column is-one-quarter">
+            <div class="container">
+                <form action="/create_channel" method="POST" class="box">
+                    <div class="field">
+                        <label class="subtitle">Channel name:</label>
+                        <input class="input is-hovered is-normal" type="text" name="channel_name" autofocus
+                            autocomplete="off" required>
+                    </div>
+                    <div class="field">
+                        <button class="button is-success" type="submit" name="send" id="send">Create channel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

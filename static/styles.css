@@ -1,0 +1,45 @@
+#flack {
+  margin-left: 5px;
+  font-family: "Lato", sans-serif;
+  font-size: x-large;
+}
+
+@keyframes hide {
+  0% {
+      opacity: 1;
+      height: 100%;
+      line-height: 100%;
+      padding: 20px;
+      margin-bottom: 10px;
+  }
+  75% {
+      opacity: 0;
+      height: 100%;
+      line-height: 100%;
+      padding: 20px;
+      margin-bottom: 10px;
+  }
+  100% {
+      opacity: 0;
+      height: 0px;
+      line-height: 0px;
+      padding: 0px;
+      margin-bottom: 0px;
+  }
+}
+
+
+.notification {
+  animation-name: hide;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-play-state: paused;
+}
+
+#channels {
+  transform: translateY(50px);
+}
+
+#column {
+  height: calc(100vh - 88px);
+}
