@@ -1,4 +1,5 @@
 import os
+import datetime
 
 from flask import (
     Flask,
@@ -20,11 +21,12 @@ SESSION_TYPE = "filesystem"
 socketio = SocketIO(app)
 Session(app)
 
-channels = []
+channels = {}
 users = []
 
-channels.append("One")
-channels.append("Two")
+channels["One"] = {"user": [], "messages": []}
+channels["Two"] = {"user": [], "messages": []}
+print(channels)
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -74,7 +76,7 @@ def create_channel():
         if new_channel in channels:
             flash("The channel is already created!", "error")
             return redirect("/create_channel")
-        channels.append(new_channel)
+        channels[new_channel] = {"user": [], "messages": []}
         flash("Channel created successfully", "success")
         return redirect("/channels")
 
@@ -86,8 +88,10 @@ def channel(c_name):
     if session.get("user"):
         name = session["user"]
         channel = session["channel"]
+        channels[c_name]["user"].append(name)
+        usersInChat = channels[c_name]["user"]
         return render_template(
-            "channel.html", channel=channel, nickname=name, users=users
+            "channel.html", channel=channel, nickname=name, users=usersInChat
         )
 
     else:
