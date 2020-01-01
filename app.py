@@ -1,5 +1,6 @@
 import os
 import datetime
+import json
 
 from flask import (
     Flask,
@@ -26,7 +27,6 @@ users = []
 
 channels["One"] = {"user": [], "messages": []}
 channels["Two"] = {"user": [], "messages": []}
-print(channels)
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -88,11 +88,10 @@ def channel(c_name):
     if session.get("user"):
         name = session["user"]
         channel = session["channel"]
-        channels[c_name]["user"].append(name)
-        usersInChat = channels[c_name]["user"]
-        return render_template(
-            "channel.html", channel=channel, nickname=name, users=usersInChat
-        )
+        if name not in channels[c_name]["user"]:
+            channels[c_name]["user"].append(name)
+            usersInChat = channels[c_name]["user"]
+        return render_template("channel.html", channel=channel, nickname=name)
 
     else:
         flash("Please enter a nickname to use in chat!", "error")
@@ -106,6 +105,14 @@ def logout():
     """
     session.clear()
     return redirect("/")
+
+
+@socketio.on("connect")
+def join():
+    current_channel = session["channel"]
+    nickname_array = json.dumps(channels[current_channel]["user"])
+    print(nickname_array)
+    emit("current_user_list", {"users": nickname_array})
 
 
 if __name__ == "__main__":
