@@ -30,7 +30,7 @@ Welcome to Flack!
                             <select name="channel" id="channel">
                                 <option disabled selected>Channels</option>
                                 {% for channel in channels %}
-                                <option>{{ channel }}</option>
+                                <option data-channel={{ channel }}>{{ channel }}</option>
                                 {% endfor %}
                             </select>
                         </div>
