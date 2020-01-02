@@ -13,7 +13,7 @@ from flask import (
     flash,
 )
 from flask_session import Session
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, join_room, leave_room
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
@@ -88,9 +88,6 @@ def channel(c_name):
     if session.get("user"):
         name = session["user"]
         channel = session["channel"]
-        if name not in channels[c_name]["user"]:
-            channels[c_name]["user"].append(name)
-            usersInChat = channels[c_name]["user"]
         return render_template("channel.html", channel=channel, nickname=name)
 
     else:
@@ -109,10 +106,13 @@ def logout():
 
 @socketio.on("connect")
 def join():
+    nickname = session["user"]
     current_channel = session["channel"]
+    join_room(current_channel)
+    if nickname not in channels[current_channel]["user"]:
+        channels[current_channel]["user"].append(nickname)
     nickname_array = json.dumps(channels[current_channel]["user"])
-    print(nickname_array)
-    emit("current_user_list", {"users": nickname_array})
+    emit("current_user_list", {"users": nickname_array}, room=current_channel)
 
 
 if __name__ == "__main__":
