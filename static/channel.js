@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     userList = document.getElementById("users_list");
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+    let messageForm = document.getElementById('message_form'),
+        userList = document.getElementById("users_list"),
 
     socket.on("current_user_list", data => {
         let remoteList = JSON.parse(data.users),

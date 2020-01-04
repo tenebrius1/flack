@@ -1,3 +1,7 @@
+html {
+  overflow-y: hidden;
+}
+
 #flack {
   margin-left: 5px;
   font-family: "Lato", sans-serif;
@@ -42,4 +46,42 @@
 
 #column {
   height: calc(100vh - 88px);
+}
+
+.message_element {
+  margin: 0.7rem 0 1px 0;
+}
+
+.message_author_repeated {
+  margin: 1px 0;
+}
+
+.message_text {
+  padding: 0.35rem 0.7rem;
+  background-color: rgb(241, 240, 240);
+  color: #1d2129;
+  border-radius: 23px;
+  display: inline-block;
+  font-size: 14px;
+  box-shadow: none;
+}
+
+.current_user {
+  background-color: #0084ff;
+  color: white;
+}
+
+.message_author {
+  padding: 0 0.7rem;
+  font-size: 12px;
+}
+
+.message_view {
+  overflow-y: scroll;
+  height: calc(100vh - 88px);
+  padding: 0 0.7rem;
+}
+
+#message_form {
+  transform: translateY(-10px);
 }

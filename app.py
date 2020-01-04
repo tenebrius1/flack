@@ -22,33 +22,54 @@ SESSION_TYPE = "filesystem"
 socketio = SocketIO(app)
 Session(app)
 
-channels = {}
-users = []
 
-channels["One"] = {"user": [], "messages": []}
-channels["Two"] = {"user": [], "messages": []}
+class Message:
+    def __init__(self, author, message):
+        self.author = author
+        self.message = message
+
+
+class Channel:
+    def __init__(self, index, name):
+        self.index = index
+        self.name = name
+        self.messages = []
+        self.users = []
+
+    def add_message(self, message: Message):
+        self.messages.append(message)
+
+    def add_user(self, user):
+        self.users.append(user)
+
+
+g_channels = ["One", "Two"]
+channels = []
+users = []
+limit = 100
+
+channels.append(Channel(index=0, name="One"))
+channels.append(Channel(index=1, name="Two"))
 
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
         name = request.form.get("nickname")
-        channel = request.form.get("channel")
+        channel =  int(request.form.get("channel"))
+        channel_name = channels[channel].name
         # Checks whether a particuar username is in the channel, if so, response with an error message
         if name in users:
-            flash("Nickname is already taken, please choose another nickname!")
+            flash("Nickname is already taken, please choose another nickname!", "error")
             return redirect("/")
         # Checks whether user typed in a nickname
         if not name or name == "":
-            flash("Please enter a nickname!")
-            return redirect("/")
-        if channel == None:
-            flash("Please select a channel to enter!", "error")
+            flash("Please enter a nickname!", "error")
             return redirect("/")
         users.append(name)
         session["user"] = name
         session["channel"] = channel
-        return redirect(url_for("channel", c_name=channel))
+        return redirect(url_for("channel", c_name=channel_name))
 
     return render_template("index.html", channels=channels)
 
@@ -59,7 +80,7 @@ def channels_view():
     if session.get("user"):
         nickname = session["user"]
         if request.args.get("ch"):
-            new_channel = request.args.get("ch")
+            new_channel = int(request.args.get("ch"))
             session["channel"] = new_channel
             return redirect(url_for("channel", c_name=new_channel))
         else:
@@ -72,11 +93,13 @@ def channels_view():
 @app.route("/create_channel", methods=["GET", "POST"])
 def create_channel():
     if request.method == "POST":
-        new_channel = request.form.get("channel_name")
-        if new_channel in channels:
+        new_channel_name = request.form.get("channel_name")
+        if new_channel_name in g_channels:
             flash("The channel is already created!", "error")
             return redirect("/create_channel")
-        channels[new_channel] = {"user": [], "messages": []}
+        g_channels.append(new_channel_name)
+        new_channel = Channel(index=len(channels), name=new_channel_name)
+        channels.append(new_channel)
         flash("Channel created successfully", "success")
         return redirect("/channels")
 
@@ -88,7 +111,7 @@ def channel(c_name):
     if session.get("user"):
         name = session["user"]
         channel = session["channel"]
-        return render_template("channel.html", channel=channel, nickname=name)
+        return render_template("channel.html", channel=channels[channel], nickname=name)
 
     else:
         flash("Please enter a nickname to use in chat!", "error")
@@ -109,9 +132,9 @@ def join():
     nickname = session["user"]
     current_channel = session["channel"]
     join_room(current_channel)
-    if nickname not in channels[current_channel]["user"]:
-        channels[current_channel]["user"].append(nickname)
-    nickname_array = json.dumps(channels[current_channel]["user"])
+    if nickname not in channels[current_channel].users:
+        channels[current_channel].users.append(nickname)
+    nickname_array = json.dumps(channels[current_channel].users)
     emit("current_user_list", {"users": nickname_array}, room=current_channel)
 
 

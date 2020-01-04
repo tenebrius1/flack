@@ -4,6 +4,14 @@
 Channels
 {% endblock %}
 
+{% block script %}
+<style>
+    html {
+        overflow-y: auto;
+    }
+</style>
+{% endblock %}
+
 {% block main %}
 <div class="container has-text-centered" id="channels">
     <aside class="menu">
@@ -12,7 +20,7 @@ Channels
         </p>
         <ul class="menu-list is-size-5">
             {% for channel in channels %}
-            <li><a class="channel" href="{{ url_for('channels_view', ch=channel) }}">{{ channel }}</a></li>
+            <li><a class="channel" href="{{ url_for('channels_view', ch=channel.index) }}">{{ channel.name }}</a></li>
             {% endfor %}
         </ul>
     </aside>
