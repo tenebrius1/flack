@@ -82,7 +82,8 @@ def channels_view():
         if request.args.get("ch"):
             new_channel = int(request.args.get("ch"))
             session["channel"] = new_channel
-            return redirect(url_for("channel", c_name=new_channel))
+            c_name = channels[new_channel].name
+            return redirect(url_for("channel", c_name=c_name))
         else:
             return render_template("channels.html", channels=channels)
     else:
