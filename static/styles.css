@@ -82,6 +82,12 @@ html {
   padding: 0 0.7rem;
 }
 
+@media only screen and (max-width: 768px) {
+  .message_view {
+      height: calc(100vh - 124px);
+  }
+}
+
 #message_form {
   transform: translateY(-10px);
 }
