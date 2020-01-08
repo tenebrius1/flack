@@ -156,6 +156,4 @@ def new_message(data):
 
 
 if __name__ == "__main__":
-    app.env = "development"
-    app.debug = True
-    app.run(port=80)
+    app.run()
