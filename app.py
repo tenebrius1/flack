@@ -168,6 +168,4 @@ def leave():
 
 
 if __name__ == "__main__":
-    app.env = "development"
-    app.debug = True
-    socketio.run(app, port=80)
+    socketio.run(app)
