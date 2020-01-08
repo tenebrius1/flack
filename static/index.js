@@ -18,3 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+function logout() {
+  localStorage.clear();
+}

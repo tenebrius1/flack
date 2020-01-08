@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
   <!-- Bulma prerequisites -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+  <link rel="stylesheet" href="/static/bulma.min.css">
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   <link rel="icon" href="https://img.icons8.com/wired/90/000000/telegram-app.png">
 
@@ -58,7 +58,7 @@
           Create own channel
         </a>
 
-        <a class="navbar-item" href="{{ url_for('logout') }}">
+        <a class="navbar-item" href="{{ url_for('logout') }}" onclick="logout()">
           Logout
         </a>
 

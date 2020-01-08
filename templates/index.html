@@ -4,6 +4,33 @@
 Welcome to Flack!
 {% endblock %}
 
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let loginForm = document.getElementById('login_form');
+
+        if (localStorage.getItem("nickname") !== null) {
+            const nickname = localStorage.getItem("nickname");
+            loginForm.nickname.value = nickname;
+        }
+
+        if (localStorage.getItem("currentChanel") !== null) {
+            const channel = localStorage.getItem("currentChanel");
+            loginForm.channel.value = channel;
+        }
+        
+        loginForm.addEventListener('submit', event => {
+            event.preventDefault();
+            let nickname = loginForm.nickname.value,
+                channelIndex = loginForm.channel.selectedIndex;
+            localStorage.setItem("nickname", nickname);
+            localStorage.setItem("currentChanel", channelIndex);
+            loginForm.submit();
+        });
+    });
+</script>
+{% endblock %}
+
 {% block main %}
 
 <section class="hero is-info is-bold is-fullheight-with-navbar">
@@ -20,14 +47,14 @@ Welcome to Flack!
                 <form action="/" method="POST" class="field has-addons" id="login_form">
                     <p class="control has-icons-left">
                         <input class="input" type="text" placeholder="Nickname" name="nickname" id="nickname"
-                            autocomplete="off" required>
+                        autocomplete="off" required>
                         <span class="icon is-small is-left">
                             <i class="far fa-user-circle"></i>
                         </span>
                     </p>
                     <div class="control">
                         <div class="select">
-                            <select name="channel" id="channel">
+                            <select name="channel" name="nickname" id="channel">
                                 {% for channel in channels %}
                                 <option value="{{ channel.index }}">{{ channel.name }}</option>
                                 {% endfor %}

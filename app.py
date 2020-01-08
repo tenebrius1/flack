@@ -1,5 +1,5 @@
 import os
-import datetime
+from datetime import datetime
 import json
 
 from flask import (
@@ -47,6 +47,8 @@ g_channels = ["One", "Two"]
 channels = []
 users = []
 limit = 100
+now = datetime.now()  # current date and time
+time = now.strftime("%H:%M")
 
 channels.append(Channel(index=0, name="One"))
 channels.append(Channel(index=1, name="Two"))
@@ -56,7 +58,7 @@ channels.append(Channel(index=1, name="Two"))
 def index():
     if request.method == "POST":
         name = request.form.get("nickname")
-        channel =  int(request.form.get("channel"))
+        channel = int(request.form.get("channel"))
         channel_name = channels[channel].name
         # Checks whether a particuar username is in the channel, if so, response with an error message
         if name in users:
@@ -112,7 +114,9 @@ def channel(c_name):
     if session.get("user"):
         name = session["user"]
         channel = session["channel"]
-        return render_template("channel.html", channel=channels[channel], nickname=name)
+        return render_template(
+            "channel.html", channel=channels[channel], nickname=name, time=time
+        )
 
     else:
         flash("Please enter a nickname to use in chat!", "error")
@@ -137,6 +141,18 @@ def join():
         channels[current_channel].users.append(nickname)
     nickname_array = json.dumps(channels[current_channel].users)
     emit("current_user_list", {"users": nickname_array}, room=current_channel)
+
+
+@socketio.on("new_message")
+def new_message(data):
+    user = session["user"]
+    channel = int(session["channel"])
+    text = data["msg"]
+    msg = Message(user, text)
+    channels[channel].add_message(msg)
+    if len(channels[channel].messages) >= limit:
+        del channels[channel].messages[0]
+    emit("write_message", {"nickname": user, "message": text})
 
 
 if __name__ == "__main__":

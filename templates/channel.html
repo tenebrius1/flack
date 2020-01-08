@@ -55,13 +55,12 @@
                         {% endif %}
 
                         {% if nickname == message.author %}
-                            <p class="box message_text current_user">
+                            <sub>{{ time }}</sub>
+                            <p class="box message_text current_user">{{ message.message }}</p>
                         {% else %}
-                            <p class="box message_text">
-                                
-                        {% endif %}
-                                {{ message.message }}
-                            </p>
+                            <p class="box message_text">{{ message.message }}</p>
+                            <sub>{{ time }}</sub>
+                        {% endif %}                          
                         </div>
                         {% endfor %}
                     </div>
