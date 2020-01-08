@@ -147,7 +147,6 @@ def join():
 def new_message(data):
     user = session["user"]
     channel = int(session["channel"])
-    join_room(channel)
     text = data["msg"]
     msg = Message(user, text)
     channels[channel].add_message(msg)
@@ -157,4 +156,4 @@ def new_message(data):
 
 
 if __name__ == "__main__":
-    app.run()
+    socketio.run()
