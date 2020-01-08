@@ -16,6 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Sets the variable time to be in the format eg. 15:53
         time = (h + ":" + m)
 
+    $('#message').on('focus', function() {
+        document.body.scrollTop = $(this).offset().top;
+    });
+
     // Updates the channel's user list without reloading the page
     socket.on("current_user_list", data => {
         let remoteList = JSON.parse(data.users),
@@ -26,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (let i = 0; i < remoteList.length; i++) {
             li = document.createElement("li");
+            li.setAttribute("id", nickname)
             li.innerText = remoteList[i];
             userList.append(li);
         }
@@ -84,4 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
         prevNickname = receivedNickname;
     });
 });
+
+
 

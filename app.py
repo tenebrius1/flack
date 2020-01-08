@@ -137,6 +137,8 @@ def join():
     nickname = session["user"]
     current_channel = session["channel"]
     join_room(current_channel)
+    if nickname not in users:
+        users.append(nickname)
     if nickname not in channels[current_channel].users:
         channels[current_channel].users.append(nickname)
     nickname_array = json.dumps(channels[current_channel].users)
@@ -154,6 +156,18 @@ def new_message(data):
         del channels[channel].messages[0]
     emit("write_message", {"nickname": user, "message": text}, room=channel)
 
+@socketio.on("disconnected")
+def leave():
+    user = session["user"]
+    channel = int(session["channel"])
+    users.remove(user)
+    channels[channel].users.remove(user)
+    leave_room(channel)
+    print("here")
+    emit('removed', {"nickname": user}, room=channel)
+
 
 if __name__ == "__main__":
-    socketio.run()
+    app.env = "development"
+    app.debug = True
+    socketio.run(app, port=80)
