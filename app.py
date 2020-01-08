@@ -147,13 +147,16 @@ def join():
 def new_message(data):
     user = session["user"]
     channel = int(session["channel"])
+    join_room(channel)
     text = data["msg"]
     msg = Message(user, text)
     channels[channel].add_message(msg)
     if len(channels[channel].messages) >= limit:
         del channels[channel].messages[0]
-    emit("write_message", {"nickname": user, "message": text})
+    emit("write_message", {"nickname": user, "message": text}, room=channel)
 
 
 if __name__ == "__main__":
-    socketio.run(app)
+    app.env = "development"
+    app.debug = True
+    app.run(port=80)
