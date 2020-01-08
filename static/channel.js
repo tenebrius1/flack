@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (let i = 0; i < remoteList.length; i++) {
             li = document.createElement("li");
-            li.setAttribute("id", nickname)
+            li.setAttribute("id", remoteList[i])
             li.innerText = remoteList[i];
             userList.append(li);
         }
@@ -88,7 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
         messageContainer.scrollIntoView({ block: "end", behavior: "smooth" });
         prevNickname = receivedNickname;
     });
+
+    socket.on("removed", data => {
+        document.getElementById(data.nickname).remove();
+    });
 });
-
-
-

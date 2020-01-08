@@ -156,7 +156,7 @@ def new_message(data):
         del channels[channel].messages[0]
     emit("write_message", {"nickname": user, "message": text}, room=channel)
 
-@socketio.on("disconnected")
+@socketio.on("disconnect")
 def leave():
     user = session["user"]
     channel = int(session["channel"])
@@ -168,4 +168,6 @@ def leave():
 
 
 if __name__ == "__main__":
-    socketio.run(app)
+    app.env = "development"
+    app.debug = True
+    socketio.run(app, port=80)
