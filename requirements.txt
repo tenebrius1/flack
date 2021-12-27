@@ -24,4 +24,4 @@ toml==0.10.0
 typed-ast==1.4.3
 Werkzeug==0.16.0
 wrapt==1.11.2
-eventlet==0.30.2
+eventlet==0.31.0
